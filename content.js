@@ -1,9 +1,7 @@
 window.setTimeout(function() {
     const date = new Date()
 const sicneDate = new Date(date.getFullYear(), date.getMonth() + 1, 0);
-console.log(sicneDate);
-
-
+console.log("andrey idi naxyi");
 const year = sicneDate.getFullYear();
 const month = sicneDate.getMonth();
 const day = new Date().getDate();
@@ -12,8 +10,6 @@ const since = `${year}-${month + 1}-${day}T00:00:00`;
 const until = `${month === 11 &&
 	day === 31 ? year + 1 : year}-${day === sicneDate.getDate() ? month + 2 : month + 1}-${newDay}T00:00:00`;
 const url = "https://api.todoist.com/sync/v9/completed/get_all";
-console.log(`until`, until);
-console.log("since", since);
 
 const request = async (url, method = 'GET', body = null, headers = {
 	'Content-Type': 'application/json'
