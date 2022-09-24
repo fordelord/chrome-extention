@@ -13,7 +13,7 @@
     "content_scripts": [
         {
             "matches": [
-                "https://todoist.com/app/activity*"
+                "https://todoist.com/app/*"
             ],
             "runat": "documet-idle",
             "js": [
