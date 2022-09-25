@@ -62,26 +62,19 @@ window.setInterval(function () {
 			});
 		}
 		getIcons();
-		console.log("test");
 	} else if (window.location.href.includes("https://todoist.com/app/project")) {
 		if (document.getElementsByClassName("button-href").length < 1) {
 			const list = document.getElementsByClassName("items")
-			list[0].addEventListener("mouseover", (e) => {
-				console.log("event", e);
-			})
 			Array.from(list[0].childNodes).forEach(element => {
-				const button = document.createElement("div");
+				const button = document.createElement("a");
 				button.innerHTML = "Link"
 				button.className = "button-href";
 				button.style.fontSize = "18px";
 				button.style.display = "absolute"
 				button.style.marginRight = "250px"
 				const dataSet = element.dataset.itemId;
-				const url = "https://todoist.com/app/task/" + dataSet + "/0"
+				button.href = "https://todoist.com/app/task/" + dataSet + "/0"
 				element.childNodes[0].childNodes[4].before(button)
-				button.addEventListener("click", () => {
-					window.open(url, '_blank').focus();
-				})
 			});
 		}
 	}
