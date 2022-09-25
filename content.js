@@ -1,6 +1,5 @@
 window.setInterval(function () {
 	if (window.location.href.includes("https://todoist.com/app/activity")) {
-
 		const parent = document.getElementsByClassName("section")
 		const items = document.querySelectorAll("ul.items");
 		const itemsArray = Array.from(items);
@@ -53,7 +52,7 @@ window.setInterval(function () {
 				const text =
 					element.parentElement.parentElement.childNodes[1].childNodes[0]
 						.childNodes[2].childNodes[0].childNodes[0].textContent;
-						
+
 				const score = getItemScore(text);
 
 				if (!score) {
@@ -67,9 +66,11 @@ window.setInterval(function () {
 	} else if (window.location.href.includes("https://todoist.com/app/project")) {
 		if (document.getElementsByClassName("button-href").length < 1) {
 			const list = document.getElementsByClassName("items")
+			list[0].addEventListener("mouseover", (e) => {
+				console.log("event", e);
+			})
 			Array.from(list[0].childNodes).forEach(element => {
 				const button = document.createElement("div");
-				// let url;
 				button.innerHTML = "Link"
 				button.className = "button-href";
 				button.style.fontSize = "18px";
