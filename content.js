@@ -60,7 +60,7 @@ window.setInterval(function () {
 			});
 		}
 		getIcons();
-		console.log("test");
+		// console.log("test");
 	} else if (window.location.href.includes("https://todoist.com/app/project")) {
 		if (document.getElementsByClassName("button-href").length < 1) {
 			const list = document.getElementsByClassName("items")
