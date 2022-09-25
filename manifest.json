@@ -1,25 +1,27 @@
 {
-    "name": "Todoist",
-    "description": "Todois",
-    "version": "1.0",
-    "permissions": [
-        "storage",
-        "activeTab"
-    ],
-    "background": {
-        "scripts": ["background.js"],
-        "persistment": false
-      },
-    "content_scripts": [
-        {
-            "matches": [
-                "https://todoist.com/app/activity*"
-            ],
-            "runat": "documet-idle",
-            "js": [
-                "content.js"
-            ]
-        }
-    ],
-    "manifest_version": 2
-  }
+	"name": "Todoist",
+	"description": "Todois",
+	"version": "1.0",
+	"permissions": [
+		"storage",
+		"activeTab"
+	],
+	"background": {
+		"scripts": [
+			"background.js"
+		],
+		"persistment": false
+	},
+	"content_scripts": [
+		{
+			"matches": [
+				"https://todoist.com/app/*"
+			],
+			"runat": "documet-idle",
+			"js": [
+				"content.js"
+			]
+		}
+	],
+	"manifest_version": 2
+}
