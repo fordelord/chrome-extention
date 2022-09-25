@@ -2,7 +2,7 @@ name: Zip Files
 
 on:
   release:
-    types: [push]
+    types: [published]
 
 jobs:
   zip-files:
@@ -11,5 +11,5 @@ jobs:
       - uses: actions/checkout@v2
       - uses: vimtor/action-zip@v1
         with:
-          files: chrome-extencion/
+          files: background.js content.js manifest.json README.md
           dest: result.zip
