@@ -28,10 +28,6 @@ jobs:
         with:
           files: background.js content.js manifest.json README.md
           dest: result.zip
-      - uses: actions/upload-artifact@v1
-        with:
-          name: my-artifact
-          path: ${{ github.workspace }}/result.zip
       - name: Chrome Extension upload & publish
         uses: Passiverecords/chrome-extension-upload-action@1.4.1
         with:
