@@ -1,7 +1,7 @@
 name: Zip Files
 on:
   release:
-    types: [published]
+    types: published
 jobs:
   zip-files:
     runs-on: ubuntu-latest
