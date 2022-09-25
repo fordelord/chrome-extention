@@ -2,7 +2,7 @@ name: Zip Files
 
 on:
   release:
-    types: [push]
+    types: [published]
 
 jobs:
   zip-files:
