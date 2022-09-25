@@ -24,6 +24,7 @@
 name: Extension publish
 on: [push]
 jobs:
+  zip-files:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -35,13 +36,13 @@ jobs:
         with:
           name: my-artifact
           path: ${{ github.workspace }}/result.zip
-       name: Chrome Extension upload & publish
-      - uses: Passiverecords/chrome-extension-upload-action@1.4.1
-          with:
-            refresh-token: '1//0cifB8MWhk6rKCgYIARAAGAwSNwF-L9Irb81Cb1xDqabAT_HujRcMvKPx7vxCN_zEqLmWit4X5N5qcgmEcA9eRkwFD9urCU5-XoQ'
-            client-id: '210050594740-1iq83rh8fiimm53pj2an0fu7t6n1lrab.apps.googleusercontent.com'
-            client-secret: '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'
-            file-name: './result.zip'
-            app-id: 'objbpokmajnohdapjgefhkjhpmoedhii'
-            publish: true
+          name: Chrome Extension upload & publish
+          - uses: Passiverecords/chrome-extension-upload-action@1.4.1
+              with:
+                refresh-token: '1//0cifB8MWhk6rKCgYIARAAGAwSNwF-L9Irb81Cb1xDqabAT_HujRcMvKPx7vxCN_zEqLmWit4X5N5qcgmEcA9eRkwFD9urCU5-XoQ'
+                client-id: '210050594740-1iq83rh8fiimm53pj2an0fu7t6n1lrab.apps.googleusercontent.com'
+                client-secret: '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'
+                file-name: './result.zip'
+                app-id: 'objbpokmajnohdapjgefhkjhpmoedhii'
+                publish: true
       
