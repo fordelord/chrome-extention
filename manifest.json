@@ -2,17 +2,6 @@
 	"name": "Todoist",
 	"description": "Todois",
 	"version": "1.0",
-<<<<<<< HEAD
-=======
-	"permissions": [
-	],
-	"background": {
-		"scripts": [
-			"background.js"
-		],
-		"persistment": false
-	},
->>>>>>> 0a3df78bf27eb4d0d7bcccc2bb65e6d0479faf12
 	"content_scripts": [
 		{
 			"matches": [
