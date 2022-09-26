@@ -44,7 +44,7 @@ window.setInterval(function () {
 		})
 		function getIcons() {
 			const icons = document.getElementsByClassName("avatar_event_icon");
-			Array.from(icons).forEach((element) => {
+			Array.from(icons).map((element) => {
 				if (element.children[0].dataset.svgsPath !== "sm1/notification_completed.svg") {
 					return;
 				}
@@ -65,7 +65,7 @@ window.setInterval(function () {
 	} else if (window.location.href.includes("https://todoist.com/app/project")) {
 		if (document.getElementsByClassName("button-href").length < 1) {
 			const list = document.getElementsByClassName("items")
-			Array.from(list[0].childNodes).forEach(element => {
+			Array.from(list[0].childNodes).map(element => {
 				const button = document.createElement("a");
 				button.innerHTML = "Link"
 				button.className = "button-href";
