@@ -3,7 +3,6 @@
 	"description": "Todois",
 	"version": "1.0",
 	"permissions": [
-		"storage",
 		"activeTab"
 	],
 	"background": {
