@@ -32,19 +32,20 @@ window.setInterval(function () {
 
 		const setSum = (points, numForId, parent) => {
 			const div1 = document.createElement("div")
+			const counterNum = parent[numForId].childNodes[0];
 			div1.innerHTML = "Total Score For This Day: " + points;
 			div1.id = `counter`
 			div1.style.fontSize = "24px"
 			div1.style.fontWeight = 600
-			if (parent[numForId].childNodes[0].id === "counter" && getItemScoreFromDiv(parent[numForId].childNodes[0].textContent) !== points) {
-				parent[numForId].childNodes[0].remove();
+			if (counterNum.id === "counter" && getItemScoreFromDiv(counterNum.textContent) !== points) {
+				counterNum.remove();
 				div1.innerHTML = "Total Score For This Day: " + points;
-				parent[numForId].childNodes[0].before(div1)
+				counterNum.before(div1)
 			}
-			if (parent[numForId].childNodes[0].id === "counter") {
+			if (counterNum.id === "counter") {
 				return
 			}
-			parent[numForId].childNodes[0].before(div1)
+			counterNum.before(div1);
 		}
 
 		getItemsScores(itemsArray).map((item, i = 0) => {
