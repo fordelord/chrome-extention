@@ -23,25 +23,34 @@ window.setInterval(function () {
 		const getItemScore = name => {
 			const scoreText = name.replaceAll("\n", " ").match(/^.+\[(?<score>\d+)\]\s*.*$/)?.groups?.["score"];
 			return scoreText ? parseInt(scoreText) : undefined;
-
 		}
 
-		const setSum = (points, numForId, parent) => {
-			if (parent[numForId].childNodes[0].id === "counter") {
-				return;
-			}
+        const getItemScoreFromDiv = name => {
+            const scoreText = name.match(/^.*\:\s*(?<score>\d+)\s*$/)?.groups?.["score"];
+            return scoreText ? parseInt(scoreText) : undefined;
+        }
 
-			const div1 = document.createElement("div")
-			div1.innerHTML = "Total Score For This Day: " + points;
+		const setSum = (points, numForId, parent) => {
+            const div1 = document.createElement("div")
+            div1.innerHTML = "Total Score For This Day: " + points;
 			div1.id = `counter`
 			div1.style.fontSize = "24px"
 			div1.style.fontWeight = 600
+            if (parent[numForId].childNodes[0].id === "counter" && getItemScoreFromDiv(parent[numForId].childNodes[0].textContent) !== points) {
+                parent[numForId].childNodes[0].remove();
+                div1.innerHTML = "Total Score For This Day: " + points;
+                parent[numForId].childNodes[0].before(div1)
+                }
+			if (parent[numForId].childNodes[0].id === "counter") {
+				return
+			}
 			parent[numForId].childNodes[0].before(div1)
 		}
 
 		getItemsScores(itemsArray).map((item, i = 0) => {
 			return setSum(item, i, parent);
 		})
+
 		function getIcons() {
 			const icons = document.getElementsByClassName("avatar_event_icon");
 			Array.from(icons).map((element) => {
@@ -62,6 +71,7 @@ window.setInterval(function () {
 			});
 		}
 		getIcons();
+        
 	} else if (window.location.href.includes("https://todoist.com/app/project")) {
 		if (document.getElementsByClassName("button-href").length < 1) {
 			const list = document.getElementsByClassName("items")
@@ -71,10 +81,20 @@ window.setInterval(function () {
 				button.className = "button-href";
 				button.style.fontSize = "18px";
 				button.style.display = "absolute"
-				button.style.marginRight = "250px"
+				button.style.marginRight = "50px"
+                button.style.onm
 				const dataSet = element.dataset.itemId;
-				button.href = "https://todoist.com/app/task/" + dataSet + "/0"
-				element.childNodes[0].childNodes[4].before(button)
+                element.addEventListener("mouseenter", () => {
+                    if (!(element.childNodes[0].childNodes[4].childNodes[0].className === "button-href")) {
+                        element.childNodes[0].childNodes[4].childNodes[0].before(button)
+                    }
+                })
+                const url = "https://todoist.com/app/task/" + dataSet + "/0"
+                if (element.childNodes[0].childNodes[4].childNodes.length > 1)
+				    element.childNodes[0].childNodes[4].childNodes[0].before(button)
+                button.addEventListener("click", () => {
+                    window.open(url, '_blank').focus();
+                })
 			});
 		}
 	}

@@ -2,16 +2,6 @@
 	"name": "Todoist",
 	"description": "Todois",
 	"version": "1.0",
-	"permissions": [
-		"storage",
-		"activeTab"
-	],
-	"background": {
-		"scripts": [
-			"background.js"
-		],
-		"persistment": false
-	},
 	"content_scripts": [
 		{
 			"matches": [
