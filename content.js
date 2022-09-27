@@ -12,7 +12,7 @@
 			script1();
 			script2();✅
 		}
-
+//da
 		window.setInterval(() => {
 			runApp();
 		})
