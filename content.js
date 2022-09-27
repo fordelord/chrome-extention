@@ -1,4 +1,23 @@
+// # 1 Бажано були би використовувати форматування prettier, щоби між нами в редакторах, було меньше розбіжностей і ми краще всі працювали, здаєтся файли в цьому проєкті не відформатовані
+// Давай для стандарта використовувати ось цей конфіг з AlexCode:
+// https://github.com/1alexvash/AlexCodeBlog/blob/master/.prettierrc
+
+// # 2 О цей, таймер як я розумію, не буде запускатись на кожному на сайті, так як в нас є обмеження в файлі manifest.json?
+// # 3 Додаткове питання, без window, в нас в browser extenshion таймер не запустится?
 window.setInterval(function () {
+	// #4 цю функцію, краще було би порефакторити і винести в окрему функцію, так би логіка була би краще розділена
+	// Щось типу такого в ідеалі, щоби по кожному скрипту була окрема логіка, зараз важко сказати, що до чого відносится
+	/*
+		const runApp = () => {
+		    script1();
+		    script2();
+		}
+
+		window.setInterval(() => {
+		    runApp();
+		})
+	*/
+	// #5 Чому на слово todoist в редакторі є особлива підсвітка від редактора? цікаво 🤔
 	if (window.location.href.includes("https://todoist.com/app/activity")) {
 		const parent = document.getElementsByClassName("section")
 		const items = document.querySelectorAll("ul.items");
@@ -15,10 +34,16 @@ window.setInterval(function () {
 						return 0;
 					}
 
+					// #6 заміни атрібути на accumulator і currentValue
+					// І старайся не використовувати короткі імена для змінних, так як вони не дуже інформативні
+					// Коли бачиш якусь зміну типу u, i, o, можна тільки гадати, що це значить
+					// Компютеру всерівно, а людина не зрозуміє
 				}).reduce((v, k) => v + k, 0);
 
 			})
 		}
+		// #7 Перед і після функції має бути пуста лінія, щоби текст читався я книжнка з параграфами (Правило з clean code)
+		// #8 Здаєтся що функція використовує статичний атрибут regex, тому його можна винести з функції
 		const getItemScore = (name, regex) => {
 			const scoreText = name.replaceAll("\n", " ").match(regex)?.groups?.["score"];
 			return scoreText ? parseInt(scoreText) : undefined;
@@ -27,6 +52,7 @@ window.setInterval(function () {
 			const div1 = document.createElement("div")
 			const regex = /^.*\:\s*(?<score>\d+)\s*$/;
 			const counterNum = parent[numForId].childNodes[0];
+			// #9 Не забувай про template literal `Total Score For This Day: ${points}` теж варіант
 			div1.innerHTML = "Total Score For This Day: " + points;
 			div1.id = `counter`
 			div1.style.fontSize = "24px"
@@ -42,14 +68,18 @@ window.setInterval(function () {
 			counterNum.before(div1);
 		}
 
+		// #10 Тут можна використати arrow function
+		// index завжди, починаєтся з 0, тому можна не передавати його як параметр
 		getItemsScores(itemsArray).map((item, i = 0) => {
 			return pastDivToPage(item, i, parent);
 		})
 
 		function getIcons() {
 			const icons = document.getElementsByClassName("avatar_event_icon");
+			// #11 точно такий самий regex вже використовуєтся в програмі, винеи його наверх в окрему константу
 			const regex = /^.+\[(?<score>\d+)\]\s*.*$/;
 			Array.from(icons).map(element => {
+				// #12 element_parent похоже на python, в JS в нас camelCase використовуєтся тому має бути parentElement
 				const element_parent = element.parentElement.parentElement.childNodes[1].childNodes[0];
 				if (element.children[0].dataset.svgsPath !== "sm1/notification_completed.svg") {
 					return;
@@ -59,6 +89,9 @@ window.setInterval(function () {
 
 				const score = getItemScore(text, regex);
 
+				// # 13 score === undefined, легше читаєтся
+				// clean code правило про positive checks vs negative checks можеш глянути в інтернеті
+				// так як знаки !! оклику, як правило важко головою обробляти
 				if (!score) {
 					element_parent.childNodes[2].style.backgroundColor = "red";
 				}
@@ -84,9 +117,11 @@ window.setInterval(function () {
 						btn_link_parent[0].before(button)
 					}
 				})
+				// #14 Тут template literal взагалі на ура зайде
 				const url = "https://todoist.com/app/task/" + dataSet + "/0"
 				if (btn_link_parent.length > 1)
 					btn_link_parent[0].before(button)
+					// #15 табуляція не вирівняна, використовуй prettier
 				button.addEventListener("click", () => {
 					window.open(url, '_blank').focus();
 				})
