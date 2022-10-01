@@ -1,10 +1,3 @@
-// # 1 Бажано були би використовувати форматування prettier, щоби між нами в редакторах, було меньше розбіжностей і ми краще всі працювали, здаєтся файли в цьому проєкті не відформатовані
-// Давай для стандарта використовувати ось цей конфіг з AlexCode:
-// https://github.com/1alexvash/AlexCodeBlog/blob/master/.prettierrc
-//✅✅✅
-
-// # 2 О цей, таймер як я розумію, не буде запускатись на кожному на сайті, так як в нас є обмеження в файлі manifest.json?❓❓❓
-// # 3 Додаткове питання, без window, в нас в browser extenshion таймер не запустится?❓❓❓
 // #4 цю функцію, краще було би порефакторити і винести в окрему функцію, так би логіка була би краще розділена✅✅✅
 // Щось типу такого в ідеалі, щоби по кожному скрипту була окрема логіка, зараз важко сказати, що до чого відносится
 /*
@@ -12,44 +5,37 @@
 			script1();
 			script2();✅
 		}
-//da
 		window.setInterval(() => {
 			runApp();
 		})
 	*/
 const runApp = () => {
-  // #5 Чому на слово todoist в редакторі є особлива підсвітка від редактора? цікаво 🤔 ❓❓❓
   if (window.location.href.includes("https://todoist.com/app/activity")) {
+    const link = document.createElement("link");
+    link.setAttribute("rel", "stylesheet");
+    link.setAttribute("type", "text/css");
+    link.setAttribute("href", "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap");
+    document.head.appendChild(link);
     const parent = document.getElementsByClassName("section");
     const items = document.querySelectorAll("ul.items");
     const itemsArray = Array.from(items);
-    const regex = /^.*\:\s*(?<score>\d+)\s*$/;
+    const regexForCompleteScore = /^.*\:\s*(?<score>\d+)\s*$/;
+    const regexForScoreAndPoints = /^.+\[(?<score>\d+)\]\s*.*$/;
 
     const getItemsScores = (items) => {
-      const regex = /^.+\[(?<score>\d+)\]\s*.*$/;
       return items.map((item) => {
         const childNodes = [...item.childNodes];
         return childNodes
           .map((i) => {
-            if (
-              i.childNodes[0].childNodes[1].childNodes[0].dataset.svgsPath ===
-              "sm1/notification_completed.svg"
-            ) {
-              return getItemScore(i.innerText, regex) ?? 0;
+            if (i.childNodes[0].childNodes[1].childNodes[0].dataset.svgsPath === "sm1/notification_completed.svg") {
+              return getItemScore(i.innerText, regexForScoreAndPoints) ?? 0;
             } else {
               return 0;
             }
-
-            // #6 заміни атрібути на accumulator і currentValue
-            // І старайся не використовувати короткі імена для змінних, так як вони не дуже інформативні
-            // Коли бачиш якусь зміну типу u, i, o, можна тільки гадати, що це значить
-            // Компютеру всерівно, а людина не зрозуміє✅✅✅
           })
           .reduce((accumulator, currentValue) => accumulator + currentValue, 0);
       });
     };
-    // #7 Перед і після функції має бути пуста лінія, щоби текст читався я книжнка з параграфами (Правило з clean code)✅✅✅
-    // #8 Здаєтся що функція використовує статичний атрибут regex, тому його можна винести з функції✅✅✅
     const getItemScore = (name, regex) => {
       const scoreText = name.replaceAll("\n", " ").match(regex)?.groups?.["score"];
       return scoreText ? parseInt(scoreText) : undefined;
@@ -57,50 +43,73 @@ const runApp = () => {
 
     const pastDivToPage = (points, numForId, parent) => {
       const div1 = document.createElement("div");
-
-      const counterNum = parent[numForId].childNodes[0];
-      // #9 Не забувай про template literal `Total Score For This Day: ${points}` теж варіант✅✅✅
-      div1.innerHTML = `Total Score For This Day: ${points}`;
+      const sumOfScores = document.createElement("div");
+      const divStyles = div1.style;
+      const counterNum = parent[numForId].childNodes[0].childNodes[1].childNodes[0];
+      //   console.log("counterNum", counterNum);
+      div1.innerHTML = `Total Score For This Day: `;
+      const stylesSumOfScores = sumOfScores.style;
+      sumOfScores.innerHTML = points;
+      stylesSumOfScores.fontSize = "12px";
+      stylesSumOfScores.fontWeight = 700;
+      stylesSumOfScores.fontFamily = "Inter";
+      stylesSumOfScores.position = "relative";
+      stylesSumOfScores.left = "636px";
       div1.id = `counter`;
-      div1.style.fontSize = "24px";
-      div1.style.fontWeight = 600;
-      if (counterNum.id === "counter" && getItemScore(counterNum.textContent, regex) !== points) {
-        counterNum.remove();
-        todoist;
-        div1.innerHTML = "Total Score For This Day: " + points;
-        counterNum.before(div1);
+      divStyles.fontSize = "12px";
+      divStyles.fontWeight = 400;
+      divStyles.fontFamily = "Inter";
+      divStyles.position = "relative";
+      divStyles.left = "492px";
+      divStyles.top = "19px";
+      console.log("sumOfScores", sumOfScores);
+      if (counterNum.id === "counter" && sumOfScores.textContent !== points) {
+        div1.remove();
+        stylesSumOfScores.innerHTML = points;
+        div1.after(sumOfScores);
       }
       if (counterNum.id === "counter") {
         return;
       }
       counterNum.before(div1);
+      div1.after(sumOfScores);
     };
 
-    // #10 Тут можна використати arrow function❓❓❓
-    // index завжди, починаєтся з 0, тому можна не передавати його як параметр ✅✅✅
     getItemsScores(itemsArray).map((item, index) => {
       return pastDivToPage(item, index, parent);
     });
 
     function getIcons() {
       const icons = document.getElementsByClassName("avatar_event_icon");
-      // #11 точно такий самий regex вже використовуєтся в програмі, винеи його наверх в окрему константу✅✅✅
+
       Array.from(icons).map((element) => {
-        // #12 elementParent похоже на python, в JS в нас camelCase використовуєтся тому має бути parentElement✅✅✅
-        const elementParent = element.parentElement.parentElement.childNodes[1].childNodes[0];
+        const elementParent = element.parentElement.parentElement;
+        // console.log("elementParent", elementParent);
         if (element.children[0].dataset.svgsPath !== "sm1/notification_completed.svg") {
           return;
         }
 
-        const text = elementParent.childNodes[2].childNodes[0].childNodes[0].textContent;
-
-        const score = getItemScore(text, regex);
-
-        // # 13 score === undefined, легше читаєтся✅✅✅
-        // clean code правило про positive checks vs negative checks можеш глянути в інтернеті
-        // так як знаки !! оклику, як правило важко головою обробляти
+        const textOfDiv = elementParent.childNodes[1].childNodes[0];
+        //div > task name
+        const span = elementParent.childNodes[1].childNodes[1];
+        //time of task
+        const taskName = textOfDiv.childNodes[2].childNodes[0].childNodes[0].textContent;
+        console.log("textOfDiv", textOfDiv);
+        const score = getItemScore(taskName, regexForScoreAndPoints);
+        // console.log("score", score);
         if (score === undefined) {
-          elementParent.childNodes[2].style.backgroundColor = "red";
+          elementParent.style.backgroundColor = "rgba(246, 193, 4, 0.11)";
+          if (span.id === "nopoints") {
+            return;
+          }
+          const noPoints = document.createElement("div");
+          noPoints.innerHTML = "No points entered for this task";
+          span.id = "nopoints";
+          noPoints.fontSize = "11px";
+          noPoints.fontWeight = 500;
+          noPoints.fontFamily = "Inter";
+          noPoints.style.color = "#BC760D";
+          span.after(noPoints);
         }
       });
     }
@@ -123,10 +132,10 @@ const runApp = () => {
             btn_link_parent[0].before(button);
           }
         });
-        // #14 Тут template literal взагалі на ура зайде✅✅✅
+
         const url = `https://todoist.com/app/task/${dataSet}/0`;
         if (btn_link_parent.length > 1) btn_link_parent[0].before(button);
-        // #15 табуляція не вирівняна, використовуй prettier✅✅✅
+
         button.addEventListener("click", () => {
           window.open(url, "_blank").focus();
         });
